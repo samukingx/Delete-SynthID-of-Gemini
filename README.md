@@ -13,6 +13,16 @@ A modern web platform for image processing using LSB (Least Significant Bit) ste
 
 </div>
 
+## 📸 Screenshots
+
+<div align="center">
+
+![Screenshot 1](public/1.png)
+
+![Screenshot 2](public/2.png)
+
+</div>
+
 ---
 
 ## 🚀 Tech Stack
