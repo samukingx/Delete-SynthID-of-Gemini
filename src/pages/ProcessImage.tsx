@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import ImageDropZone from '@/components/ImageDropZone'
 import {
   fileToImageData,
-  processImageLSB,
+  removeAllAIWatermarks,
   restoreImageLSB,
   imageDataToBlob,
   type ProcessResult
@@ -22,8 +22,12 @@ import {
   FileX,
   Shield,
   Cpu,
-  Lock
+  Lock,
+  Zap,
+  Settings
 } from 'lucide-react'
+
+type AggressivenessLevel = 'low' | 'medium' | 'high' | 'extreme'
 
 export default function ProcessImage() {
   const [originalFile, setOriginalFile] = useState<File | null>(null)
@@ -32,6 +36,8 @@ export default function ProcessImage() {
   const [seed, setSeed] = useState<string>('')
   const [isProcessing, setIsProcessing] = useState(false)
   const [previewUrl, setPreviewUrl] = useState<string | null>(null)
+  const [aggressiveness, setAggressiveness] = useState<AggressivenessLevel>('high')
+  const [outputFormat, setOutputFormat] = useState<'png' | 'jpeg'>('jpeg')
 
   const handleImageDrop = async (file: File) => {
     setOriginalFile(file)
@@ -61,7 +67,12 @@ export default function ProcessImage() {
 
     setIsProcessing(true)
     try {
-      const result: ProcessResult = processImageLSB(originalImageData, seed || undefined)
+      // Usar la nueva función que combina todas las técnicas
+      const result: ProcessResult = removeAllAIWatermarks(
+        originalImageData, 
+        seed || undefined,
+        aggressiveness
+      )
       setProcessedImageData(result.imageData)
       setSeed(result.seed)
 
@@ -108,11 +119,12 @@ export default function ProcessImage() {
     if (!processedImageData) return
 
     try {
-      const blob = await imageDataToBlob(processedImageData)
+      const blob = await imageDataToBlob(processedImageData, outputFormat, 0.92)
       const url = URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
-      a.download = `processed-${originalFile?.name || 'image.png'}`
+      const extension = outputFormat === 'jpeg' ? 'jpg' : 'png'
+      a.download = `processed-${originalFile?.name?.replace(/\.[^.]+$/, '') || 'image'}.${extension}`
       document.body.appendChild(a)
       a.click()
       document.body.removeChild(a)
@@ -204,6 +216,72 @@ export default function ProcessImage() {
         {/* Actions */}
         <Card className="mb-8">
           <CardContent className="pt-6">
+            {/* Processing Options */}
+            <div className="mb-6 p-4 rounded-lg bg-muted/50">
+              <div className="flex items-center gap-2 mb-3">
+                <Settings className="h-4 w-4" />
+                <span className="font-medium text-sm">Processing options</span>
+              </div>
+              <div className="grid sm:grid-cols-2 gap-4">
+                {/* Aggressiveness */}
+                <div>
+                  <label className="text-sm text-muted-foreground mb-2 block">
+                    Intensity level
+                  </label>
+                  <div className="flex gap-1 flex-wrap">
+                    {(['low', 'medium', 'high', 'extreme'] as const).map((level) => (
+                      <Button
+                        key={level}
+                        variant={aggressiveness === level ? 'default' : 'outline'}
+                        size="sm"
+                        onClick={() => setAggressiveness(level)}
+                        className="flex-1 min-w-[70px]"
+                      >
+                        {level === 'low' && '🔹 Low'}
+                        {level === 'medium' && '🔸 Med'}
+                        {level === 'high' && '🔴 High'}
+                        {level === 'extreme' && '💀 Max'}
+                      </Button>
+                    ))}
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {aggressiveness === 'low' && 'Minimal changes, best quality'}
+                    {aggressiveness === 'medium' && 'Balanced SynthID removal'}
+                    {aggressiveness === 'high' && 'Strong removal, recommended'}
+                    {aggressiveness === 'extreme' && 'Maximum attack, may affect quality'}
+                  </p>
+                </div>
+                {/* Output Format */}
+                <div>
+                  <label className="text-sm text-muted-foreground mb-2 block">
+                    Output format
+                  </label>
+                  <div className="flex gap-2">
+                    <Button
+                      variant={outputFormat === 'png' ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setOutputFormat('png')}
+                      className="flex-1"
+                    >
+                      PNG (lossless)
+                    </Button>
+                    <Button
+                      variant={outputFormat === 'jpeg' ? 'default' : 'outline'}
+                      size="sm"
+                      onClick={() => setOutputFormat('jpeg')}
+                      className="flex-1"
+                    >
+                      JPEG (extra clean)
+                    </Button>
+                  </div>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    {outputFormat === 'png' && 'Lossless, no metadata'}
+                    {outputFormat === 'jpeg' && 'Recompression removes more patterns'}
+                  </p>
+                </div>
+              </div>
+            </div>
+
             <div className="flex flex-wrap gap-3">
               <Button
                 onClick={handleProcess}
