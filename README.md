@@ -1,121 +1,163 @@
-# DeletePixel - Procesador de Imágenes LSB
+# DeletePixel - LSB Image Processor
 
-Plataforma web moderna para procesamiento de imágenes usando esteganografía LSB (Least Significant Bit). Modifica los bits menos significativos de tus imágenes de forma invisible, manteniendo la apariencia visual idéntica pero cambiando completamente los patrones binarios.
+<div align="center">
 
-## 🚀 Tecnologías
+![React](https://img.shields.io/badge/React-19.2.0-61DAFB?style=flat-square&logo=react)
+![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?style=flat-square&logo=typescript)
+![Vite](https://img.shields.io/badge/Vite-7.2-646CFF?style=flat-square&logo=vite)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-3.4-38B2AC?style=flat-square&logo=tailwind-css)
 
-- **React 19** - Biblioteca de UI
-- **TypeScript** - Tipado estático
-- **Vite** - Build tool y dev server
-- **React Router** - Enrutamiento
-- **Tailwind CSS v4** - Framework de estilos con animaciones
-- **Canvas API** - Procesamiento de imágenes en el navegador
+A modern web platform for image processing using LSB (Least Significant Bit) steganography. Modify the least significant bits of your images invisibly, keeping the visual appearance identical while completely changing the binary patterns.
 
-## ✨ Características Principales
+[Features](#-features) • [Installation](#-installation) • [How It Works](#-how-it-works) • [Project Structure](#-project-structure)
 
-- 🎨 **Procesamiento LSB**: Modifica bits menos significativos de canales RGB
-- 🔄 **Reversible**: Restaura imágenes originales usando semilla única
-- 🖼️ **Drag & Drop**: Interfaz intuitiva para arrastrar y soltar imágenes
-- 🔒 **Privacidad**: Todo el procesamiento se hace en tu navegador, sin servidores
-- ⚡ **Rápido**: Procesamiento instantáneo de imágenes
-- 🎭 **Diseño Moderno**: Animaciones y efectos visuales atractivos
+</div>
 
-## 📦 Instalación
+---
+
+## 🚀 Tech Stack
+
+| Technology | Version | Description |
+|------------|---------|-------------|
+| **React** | 19.2.0 | UI Library |
+| **TypeScript** | 5.9 | Static Typing |
+| **Vite** | 7.2 | Build Tool & Dev Server |
+| **React Router** | 7.9 | Client-side Routing |
+| **Tailwind CSS** | 3.4 | Utility-first CSS Framework |
+| **Radix UI** | Latest | Accessible UI Components |
+| **Lucide React** | Latest | Icon Library |
+| **Canvas API** | Native | Browser-based Image Processing |
+
+## ✨ Features
+
+- 🎨 **LSB Processing**: Modify least significant bits of RGB channels
+- 🔄 **Reversible**: Restore original images using a unique seed
+- 🖼️ **Drag & Drop**: Intuitive interface to drag and drop images
+- 🔒 **Privacy First**: All processing happens in your browser, no servers involved
+- ⚡ **Fast**: Instant image processing
+- 🎭 **Modern Design**: Attractive animations and visual effects
+- 📱 **Responsive**: Works on desktop and mobile devices
+
+## 📦 Installation
 
 ```bash
-# Instalar dependencias
+# Clone the repository
+git clone https://github.com/samukingx/Delete-SynthID-of-Gemini.git
+
+# Navigate to project directory
+cd Delete-SynthID-of-Gemini
+
+# Install dependencies
 npm install
 
-# Iniciar servidor de desarrollo
+# Start development server
 npm run dev
 
-# Construir para producción
+# Build for production
 npm run build
 
-# Preview de producción
+# Preview production build
 npm run preview
 ```
 
-## 📁 Estructura del Proyecto
+## 📁 Project Structure
 
 ```
-src/
-├── components/
-│   ├── Layout.tsx           # Layout principal con navegación
-│   └── ImageDropZone.tsx    # Componente drag & drop
-├── pages/
-│   ├── Home.tsx             # Página de inicio
-│   ├── ProcessImage.tsx     # Página principal de procesamiento
-│   ├── Dashboard.tsx        # Panel de control
-│   ├── Login.tsx            # Página de login
-│   └── Signup.tsx           # Página de registro
-├── utils/
-│   └── imageProcessor.ts   # Lógica LSB y procesamiento
-├── hooks/
-│   └── useAuth.ts           # Hook para autenticación
-├── services/
-│   └── api.ts               # Cliente API
-├── types/
-│   └── index.ts             # Definiciones TypeScript
-├── App.tsx                  # Componente principal
-├── main.tsx                 # Punto de entrada
-└── index.css                # Estilos globales con animaciones
+deletepixel/
+├── public/                  # Static assets
+├── src/
+│   ├── assets/              # Images and static resources
+│   ├── components/
+│   │   ├── ui/              # Reusable UI components (shadcn/ui)
+│   │   │   ├── badge.tsx
+│   │   │   ├── button.tsx
+│   │   │   ├── card.tsx
+│   │   │   ├── input.tsx
+│   │   │   ├── label.tsx
+│   │   │   └── skeleton.tsx
+│   │   ├── Layout.tsx       # Main layout with navigation
+│   │   └── ImageDropZone.tsx # Drag & drop component
+│   ├── hooks/
+│   │   └── useAuth.ts       # Authentication hook
+│   ├── lib/
+│   │   └── utils.ts         # Utility functions (cn helper)
+│   ├── pages/
+│   │   ├── Home.tsx         # Landing page
+│   │   └── ProcessImage.tsx # Main image processing page
+│   ├── services/
+│   │   └── api.ts           # API client
+│   ├── types/
+│   │   └── index.ts         # TypeScript definitions
+│   ├── utils/
+│   │   └── imageProcessor.ts # LSB logic and processing
+│   ├── App.tsx              # Main component with routes
+│   ├── main.tsx             # Entry point
+│   └── index.css            # Global styles with animations
+├── eslint.config.js         # ESLint configuration
+├── tailwind.config.js       # Tailwind CSS configuration
+├── postcss.config.js        # PostCSS configuration
+├── tsconfig.json            # TypeScript configuration
+├── vite.config.ts           # Vite configuration
+└── package.json             # Project dependencies
 ```
 
-## 🔬 ¿Cómo Funciona?
+## 🔬 How It Works
 
-### Esteganografía LSB
+### LSB Steganography
 
-El algoritmo LSB (Least Significant Bit) modifica los bits menos significativos de cada canal de color (RGB) de la imagen:
+The LSB (Least Significant Bit) algorithm modifies the least significant bits of each color channel (RGB) in the image:
 
-1. **Procesamiento**: 
-   - Toma cada píxel de la imagen
-   - Extrae el bit menos significativo (LSB) de cada canal R, G, B
-   - Aplica XOR con bits de una clave generada desde la semilla
-   - Reemplaza el LSB modificado
+1. **Processing**:
+   - Takes each pixel from the image
+   - Extracts the least significant bit (LSB) from each R, G, B channel
+   - Applies XOR with bits from a key generated from the seed
+   - Replaces the modified LSB
 
-2. **Resultado**:
-   - La imagen se ve **idéntica** al ojo humano
-   - Los patrones binarios cambian completamente
-   - El cambio es invisible visualmente
+2. **Result**:
+   - The image looks **identical** to the human eye
+   - Binary patterns change completely
+   - The change is visually invisible
 
-3. **Reversibilidad**:
-   - Usando la misma semilla, el proceso es perfectamente reversible
-   - Aplicar el mismo algoritmo restaura la imagen original
-   - Sin la semilla, la restauración es imposible
+3. **Reversibility**:
+   - Using the same seed, the process is perfectly reversible
+   - Applying the same algorithm restores the original image
+   - Without the seed, restoration is impossible
 
-### Uso
+### Usage
 
-1. **Cargar Imagen**: Arrastra y suelta una imagen o haz clic para seleccionar
-2. **Procesar**: Haz clic en "Procesar con LSB" para modificar los bits
-3. **Guardar Semilla**: Copia o descarga la semilla generada (¡es esencial!)
-4. **Descargar**: Descarga la imagen procesada
-5. **Restaurar**: Usa la semilla para restaurar la imagen original
+1. **Load Image**: Drag and drop an image or click to select
+2. **Process**: Click "Process with LSB" to modify the bits
+3. **Save Seed**: Copy or download the generated seed (essential!)
+4. **Download**: Download the processed image
+5. **Restore**: Use the seed to restore the original image
 
-## 🎨 Diseño
+## 🛠️ Available Scripts
 
-- **Tema Oscuro**: Interfaz moderna con gradientes y efectos glass
-- **Animaciones**: Transiciones suaves y efectos visuales
-- **Responsive**: Diseño adaptable a todos los dispositivos
-- **UX Intuitiva**: Interfaz clara y fácil de usar
+| Script | Description |
+|--------|-------------|
+| `npm run dev` | Start development server with hot reload |
+| `npm run build` | Build for production (TypeScript + Vite) |
+| `npm run lint` | Run ESLint for code quality |
+| `npm run preview` | Preview production build locally |
 
-## 🔧 Configuración
+## 🤝 Contributing
 
-Crea un archivo `.env` basado en `.env.example`:
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-```env
-VITE_API_URL=http://localhost:3000/api
-```
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-## 📝 Próximos Pasos
+## 📄 License
 
-- [ ] Implementar autenticación completa
-- [ ] Agregar más algoritmos de procesamiento
-- [ ] Historial de procesamientos
-- [ ] Comparación lado a lado de imágenes
-- [ ] Análisis de diferencias entre original y procesada
-- [ ] Tests unitarios y de integración
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-## 📄 Licencia
+---
 
-MIT
+<div align="center">
+
+Made with ❤️ by [samukingx](https://github.com/samukingx)
+
+</div>
